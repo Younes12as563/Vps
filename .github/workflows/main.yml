@@ -1,0 +1,12 @@
+name: Fast Stable SSH Session
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ssh:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Start SSH instantly
+        uses: mxschmitt/action-tmate@v3
