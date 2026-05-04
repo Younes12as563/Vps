@@ -1,0 +1,39 @@
+name: SSH Session Stable (6h Clean)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ssh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Install tmate
+        run: |
+          sudo apt update -y
+          sudo apt install -y tmate
+
+      - name: Start stable SSH session
+        run: |
+          echo "=============================="
+          echo "🚀 SSH SESSION STARTING"
+          echo "=============================="
+
+          # تشغيل tmate بطريقة مستقرة
+          tmate -F -S /tmp/tmate.sock new-session -d
+
+          # انتظار جاهزية الاتصال (مهم جدًا للاستقرار)
+          tmate -S /tmp/tmate.sock wait tmate-ready
+
+          echo ""
+          echo "========== SSH =========="
+          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+          echo ""
+          echo "========== WEB =========="
+          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+          echo ""
+          echo "=============================="
+
+      - name: Keep session alive
+        run: sleep 21600
